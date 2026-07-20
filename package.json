@@ -1,0 +1,25 @@
+{
+  "name": "mcp-excel",
+  "version": "0.1.0",
+  "description": "让 AI 助手直接读写本地 Excel 文件的 MCP 服务（支持 xls / xlsx / csv）",
+  "type": "module",
+  "bin": { "mcp-excel": "dist/index.js" },
+  "files": ["dist"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "exceljs": "^4.4.0",
+    "xlsx": "^0.18.5",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.5.0"
+  }
+}
