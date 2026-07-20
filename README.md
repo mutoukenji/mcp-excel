@@ -1,6 +1,15 @@
 <!-- 对应 docs/03-detailed-design.md 第 4.1 节：触点一 npm 包说明页 -->
 
-# mcp-excel —— 让 AI 助手直接读写你电脑上的 Excel 文件（支持 .xlsx / .xls / .csv）
+# mcp-excel —— 让 AI 助手直接读写你电脑上的 Excel 文件
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/mcp-excel"><img src="https://img.shields.io/npm/v/mcp-excel" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/mcp-excel"><img src="https://img.shields.io/npm/dm/mcp-excel" alt="npm downloads"></a>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen" alt="node version"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/npm/l/mcp-excel" alt="license"></a>
+</p>
+
+支持 `.xlsx` / `.xls` / `.csv` 格式。
 
 <!-- 第 4.1 节第 2 点：它能干什么 -->
 ## 它能干什么
