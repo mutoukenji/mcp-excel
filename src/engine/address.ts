@@ -52,8 +52,20 @@ export function parseRange(input: string): RangeAddr {
       `无效的区域："${input}"。正确示例："A1:D20"。`
     );
   }
-  let start = parseCell(parts[0]);
-  let end = parseCell(parts[1]);
+  let start: CellAddr;
+  let end: CellAddr;
+  try {
+    start = parseCell(parts[0]);
+    end = parseCell(parts[1]);
+  } catch (e) {
+    if (e instanceof ToolError && e.code === "INVALID_CELL") {
+      throw new ToolError(
+        "INVALID_RANGE",
+        `无效的区域："${input}"。正确示例："A1:D20"。`
+      );
+    }
+    throw e;
+  }
 
   // 保证 start 在左上，end 在右下
   if (

@@ -76,6 +76,9 @@ export function registerFormatTools(server: McpServer): void {
       const sheetName = args.sheetName as string;
       const rangeInput = args.range as string;
       const style = args.style as Record<string, unknown>;
+      if (!Object.values(style).some((v) => v !== undefined)) {
+        throw new ToolError("INVALID_PARAMS", "style 至少要包含一项设置");
+      }
       const addr = parseRange(rangeInput);
 
       await editWorkbook(filePath, (wb) => {

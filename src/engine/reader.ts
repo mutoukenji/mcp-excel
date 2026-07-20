@@ -37,9 +37,14 @@ export function readWorkbook(filePath: string): UnifiedWorkbook {
   }
 
   // 对应第 2.17 节：XLSX.readFile 解析文件，抛异常 → 包装为 UNKNOWN
+  // CSV 明确按 UTF-8 读取，避免中文乱码
+  const readOptions: XLSX.ParsingOptions = { cellDates: true };
+  if (format === "csv") {
+    (readOptions as any).codepage = 65001;
+  }
   let workbook;
   try {
-    workbook = XLSX.readFile(filePath, { cellDates: true });
+    workbook = XLSX.readFile(filePath, readOptions);
   } catch {
     throw new ToolError(
       "UNKNOWN",
@@ -50,10 +55,21 @@ export function readWorkbook(filePath: string): UnifiedWorkbook {
   // 对应第 2.17 节：逐个 sheet 转统一内存结构
   const sheets: UnifiedSheet[] = workbook.SheetNames.map((name) => {
     const ws = workbook.Sheets[name];
+
+    // 为了让稀疏数据保留位置信息，读取范围从 A1 扩展到已用区域右下角
+    let range: string | undefined;
+    const ref = ws["!ref"];
+    if (ref) {
+      const parts = ref.split(":");
+      const endCell = parts.length === 2 ? parts[1] : parts[0];
+      range = `A1:${endCell}`;
+    }
+
     const rawRows = XLSX.utils.sheet_to_json(ws, {
       header: 1,
       raw: true,
       defval: null,
+      range,
     }) as unknown[][];
 
     const normalizedRows: CellValue[][] = rawRows.map((row) =>

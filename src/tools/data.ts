@@ -348,12 +348,12 @@ function looseEqual(a: CellValue, b: CellValue): boolean {
  * 两侧都不为 null 且都能转为有限 number 时比数值，否则比字符串序
  */
 function compareForRelOp(a: CellValue, b: CellValue): number {
-  if (a !== null && b !== null) {
-    const numA = Number(a);
-    const numB = Number(b);
-    if (Number.isFinite(numA) && Number.isFinite(numB)) {
-      return numA - numB;
-    }
+  // null 不参与有序比较（> / >= / < / <=），避免 String(null)="null" 的误导性字符串比较
+  if (a === null || b === null) return Number.NaN;
+  const numA = Number(a);
+  const numB = Number(b);
+  if (Number.isFinite(numA) && Number.isFinite(numB)) {
+    return numA - numB;
   }
   return String(a).localeCompare(String(b), "zh-Hans-CN");
 }

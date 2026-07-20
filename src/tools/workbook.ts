@@ -34,6 +34,14 @@ export function registerWorkbookTools(server: McpServer): void {
         throw new ToolError("INVALID_PARAMS", "新建文件的扩展名必须是 .xlsx");
       }
       const sheets = (args.sheets as string[] | undefined) ?? ["Sheet1"];
+      for (const name of sheets) {
+        if (!sheetNameSchema.safeParse(name).success) {
+          throw new ToolError(
+            "INVALID_PARAMS",
+            `工作表名称 "${name}" 不合法。名称长度应为 1~31 个字符，且不能包含 [ ] : * ? / \\。`
+          );
+        }
+      }
       const set = new Set(sheets);
       if (set.size !== sheets.length) {
         throw new ToolError("INVALID_PARAMS", "初始工作表名称存在重复");
